@@ -7,36 +7,33 @@ import (
 
 const createdState = "CREATED"
 
-type TaskIdentifier struct {
-	Value string
-}
-
-func (ti TaskIdentifier) String() string {
-	return "TaskIdentifier: {Valuse: " + ti.Value + "}"
-}
-
 type Task struct {
 	Identifier TaskIdentifier
-	N          Param
-	M          Param
+	N1         Param
+	N2         Param
 	Result     int //Init with -1. Result of a calculation cannot be negative
 	State      string
 }
 
-func CreateTask(n1 Param, n2 Param, generate func() (TaskIdentifier, error)) (Task, TaskCreatedEvent, error) {
-	id, err := generate()
+func CreateTask(n1 Param, n2 Param, generator TaskIdGenerator) (*Task, *TaskCreatedEvent, error) {
+	id, err := generator.Generate()
 
 	if err != nil {
 		log.Fatalf("Id generation error, %s", err)
-		return Task{}, TaskCreatedEvent{}, err
+		return nil, nil, err
 	}
 
-	task := Task{id, n1, n2, -1, createdState}
-	event := TaskCreatedEvent{taskId: id}
+	task := Task{Identifier: id, N1: n1, N2: n2, Result: -1, State: createdState}
+	event := TaskCreatedEvent{TaskId: id}
 
-	return task, event, nil
+	return &task, &event, nil
 }
 
-func (t Task) String() string {
-	return "Task: {Identifier: " + t.Identifier.Value + " , N: " + strconv.Itoa(t.N.Value) + " , M: " + strconv.Itoa(t.M.Value) + " , Result: " + strconv.Itoa(t.Result) + " , State: " + t.State + "}"
+func (t *Task) String() string {
+	return "Task: {Identifier: " +
+		t.Identifier.Value + " , N: " +
+		strconv.Itoa(t.N1.Value) + " , M: " +
+		strconv.Itoa(t.N2.Value) + " , Result: " +
+		strconv.Itoa(t.Result) + " , State: " +
+		t.State + "}"
 }

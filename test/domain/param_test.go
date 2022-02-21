@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/conacry/lcm/domain"
 	"reflect"
 	"testing"
 )
@@ -8,9 +9,9 @@ import (
 const validValue = 10
 
 func TestCreateParam_ValidValue_CreateParam(t *testing.T) {
-	expectParam := Param{Value: validValue}
+	expectParam := domain.Param{Value: validValue}
 
-	actualParam, err := CreateParam(validValue)
+	actualParam, err := domain.CreateParam(validValue)
 
 	if err != nil {
 		t.Errorf("Param creation has finished with error")

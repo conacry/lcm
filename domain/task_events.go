@@ -1,9 +1,9 @@
 package domain
 
 type TaskCreatedEvent struct {
-	taskId TaskIdentifier
+	TaskId TaskIdentifier
 }
 
 func (tce TaskCreatedEvent) String() string {
-	return "TaskCreatedEvent: {taskId: " + tce.taskId.String() + "}"
+	return "TaskCreatedEvent: {taskId: " + tce.TaskId.String() + "}"
 }
